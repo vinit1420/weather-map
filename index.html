@@ -634,6 +634,15 @@ function renderOverlay() {
       const iconWrapper = document.createElementNS("http://www.w3.org/2000/svg", "g");
       iconWrapper.setAttribute("class", `severity-${evt.severity || 1}`);
 
+      // Severity ring colors: red (severe), orange (moderate), green (mild)
+      const ringColors = {1: "#22c55e", 2: "#f97316", 3: "#ef4444"};
+      const ring = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      ring.setAttribute("r", "12");
+      ring.setAttribute("fill", "none");
+      ring.setAttribute("stroke", ringColors[evt.severity || 1]);
+      ring.setAttribute("stroke-width", "2.5");
+      ring.setAttribute("opacity", "0.9");
+
       let icon;
       if (evt.icon.endsWith('.png')) {
         icon = document.createElementNS("http://www.w3.org/2000/svg", "image");
@@ -679,6 +688,7 @@ function renderOverlay() {
       g.addEventListener("mousemove", (e) => tip.show(lines, e.clientX, e.clientY));
       g.addEventListener("mouseleave", () => tip.hide());
 
+      iconWrapper.appendChild(ring);
       iconWrapper.appendChild(icon);
       g.appendChild(iconWrapper);
       if (!city.hideLabel) {
