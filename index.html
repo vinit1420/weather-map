@@ -628,8 +628,11 @@ function renderOverlay() {
 
       const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
       g.setAttribute("transform", `translate(${x + dx}, ${y + dy})`);
-      g.setAttribute("class", `severity-${evt.severity || 1}`);
       g.style.cursor = "pointer";
+
+      // Inner wrapper for icon animation (keeps positioning separate)
+      const iconWrapper = document.createElementNS("http://www.w3.org/2000/svg", "g");
+      iconWrapper.setAttribute("class", `severity-${evt.severity || 1}`);
 
       let icon;
       if (evt.icon.endsWith('.png')) {
@@ -676,7 +679,8 @@ function renderOverlay() {
       g.addEventListener("mousemove", (e) => tip.show(lines, e.clientX, e.clientY));
       g.addEventListener("mouseleave", () => tip.hide());
 
-      g.appendChild(icon);
+      iconWrapper.appendChild(icon);
+      g.appendChild(iconWrapper);
       if (!city.hideLabel) {
         g.appendChild(label);
       }
